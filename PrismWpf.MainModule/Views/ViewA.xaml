@@ -22,7 +22,7 @@
                 Command="{Binding StartCommand, Mode=OneTime}" />
 
         <Image Grid.Row="1"
-               Source="{Binding VideoImage.Value, Mode=OneWay}" />
+               Source="{Binding VideoFrameImage.Value, Mode=OneWay}" />
 
     </Grid>
 </UserControl>

@@ -18,13 +18,18 @@ namespace PrismWpf.MainModule.ViewModels
 {
     public class ViewAViewModel : BindableBase
     {
-        private VideoStreamManager VideoStreamManager = new VideoStreamManager();
+        private CompositeDisposable CompositeDisposable;
 
-        public ReactiveProperty<BitmapSource> VideoImage { get; } = new ReactiveProperty<BitmapSource>();
+        private VideoStreamManager videoStreamManager;
+
+        //public ReactiveProperty<BitmapSource> VideoImage { get; } = new ReactiveProperty<BitmapSource>();
         //{
         //    get => _VideoImage;
         //    set => SetProperty(ref _VideoImage, value);
         //}
+
+        // View表示画像
+        public ReadOnlyReactiveProperty<BitmapSource> VideoFrameImage { get; }
 
         #region Command
 
@@ -36,12 +41,20 @@ namespace PrismWpf.MainModule.ViewModels
 
         public ViewAViewModel()
         {
+            CompositeDisposable = new CompositeDisposable();
+
+            videoStreamManager = new VideoStreamManager();
+            CompositeDisposable.Add(videoStreamManager);
+
             // C++DLLのテストコード
             using (var vc = new VideoCaptureWrapper())
             {
                 //vc.ShowVideo();
                 //vc.GetVideoImage();
             }
+
+            // ReactiveProperty
+            VideoFrameImage = videoStreamManager.FrameLatest.ToReadOnlyReactiveProperty().AddTo(CompositeDisposable);
 
             this.StartCommand
                 .Subscribe(_ =>
@@ -66,14 +79,16 @@ namespace PrismWpf.MainModule.ViewModels
                         Debug.WriteLine($"End {sw.ElapsedMilliseconds}msec");
 #endif
                         // 初期化
-                        VideoStreamManager.Initialize();
+                        videoStreamManager.Initialize();
 
                         while (true)
                         {
+                            //videoStreamManager.CaptureRawFrame();
+                            videoStreamManager.CaptureEffectFrame();
+
                             //var image = VideoStreamManager.GetRawFrame();
-                            var image = VideoStreamManager.GetEffectFrame();
-                            if (image != null)
-                                VideoImage.Value = image;
+                            //var image = videoStreamManager.GetEffectFrame();
+                            //if (image != null) VideoFrameImage.Value = image;
                         }
 
                     });

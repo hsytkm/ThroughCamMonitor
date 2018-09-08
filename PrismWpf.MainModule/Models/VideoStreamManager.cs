@@ -1,40 +1,58 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Prism.Mvvm;
+using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
+using System;
+using System.Reactive.Disposables;
 using System.Windows.Media.Imaging;
 
 namespace PrismWpf.MainModule.Models
 {
-    class VideoStreamManager : IDisposable
+    class VideoStreamManager : BindableBase, IDisposable
     {
+        private CompositeDisposable CompositeDisposable;
+
         private VideoProvider videoProvider;
+
+        // View表示用の最新フレーム画像
+        public ReadOnlyReactivePropertySlim<BitmapSource> FrameLatest { get; }
 
         public VideoStreamManager()
         {
+            CompositeDisposable = new CompositeDisposable();
+
             videoProvider = new VideoProvider();
+            CompositeDisposable.Add(videoProvider);
+
+            #region ReactiveProperty
+
+            // View表示用の最新フレーム画像
+            FrameLatest = videoProvider
+                .ObserveProperty(x => x.FrameLatest)
+                .ToReadOnlyReactivePropertySlim()
+                .AddTo(CompositeDisposable);
+
+            #endregion
         }
 
         public void Dispose()
         {
-            videoProvider?.Dispose();
+            if (!CompositeDisposable.IsDisposed)
+                CompositeDisposable.Dispose();
         }
 
         public void Initialize()
         {
             videoProvider.Initialize();
         }
-
-        public BitmapSource GetRawFrame()
+        
+        public void CaptureRawFrame()
         {
-            return videoProvider.GetRawBitmapSource();
+            videoProvider.CaptureRawFrame();
         }
 
-        public BitmapSource GetEffectFrame()
-        {
-            return videoProvider.GetRawBitmapSource();
-            // ◆実装予定
-        }
+        //public BitmapSource CaptureEffectFrame()
+        //{
+        //    return videoProvider.GetRawBitmapSource();
+        //}
     }
 }
