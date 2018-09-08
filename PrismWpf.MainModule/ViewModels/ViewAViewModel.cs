@@ -10,7 +10,6 @@ using System.IO;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using ThroughCamVideoCaptureWrapper;
@@ -19,27 +18,18 @@ namespace PrismWpf.MainModule.ViewModels
 {
     public class ViewAViewModel : BindableBase
     {
-        private CompositeDisposable CompositeDisposable = new CompositeDisposable();
+        private VideoStreamManager VideoStreamManager = new VideoStreamManager();
 
-        private ModelMaster ModelMaster = new ModelMaster();
-        private VideoProvider VideoProvider;
-
-        private ReactiveProperty<BitmapSource> _VideoImage = new ReactiveProperty<BitmapSource>();
-        public ReactiveProperty<BitmapSource> VideoImage
-        {
-            get => _VideoImage;
-            set => SetProperty(ref _VideoImage, value);
-        }
+        public ReactiveProperty<BitmapSource> VideoImage { get; } = new ReactiveProperty<BitmapSource>();
+        //{
+        //    get => _VideoImage;
+        //    set => SetProperty(ref _VideoImage, value);
+        //}
 
         #region Command
 
         // 自動実行コマンド
-        private ReactiveCommand _StartCommand = new ReactiveCommand();
-        public ReactiveCommand StartCommand
-        {
-            get => _StartCommand;
-            private set => SetProperty(ref _StartCommand, value);
-        }
+        public ReactiveCommand StartCommand { get; } = new ReactiveCommand();
         
         #endregion
 
@@ -52,10 +42,6 @@ namespace PrismWpf.MainModule.ViewModels
                 //vc.ShowVideo();
                 //vc.GetVideoImage();
             }
-
-            VideoProvider = new VideoProvider();
-            CompositeDisposable.Add(VideoProvider);
-            VideoProvider.Initialize();
 
             this.StartCommand
                 .Subscribe(_ =>
@@ -79,9 +65,13 @@ namespace PrismWpf.MainModule.ViewModels
                         sw.Stop();
                         Debug.WriteLine($"End {sw.ElapsedMilliseconds}msec");
 #endif
+                        // 初期化
+                        VideoStreamManager.Initialize();
+
                         while (true)
                         {
-                            var image = VideoProvider.GetVideoFrame();
+                            //var image = VideoStreamManager.GetRawFrame();
+                            var image = VideoStreamManager.GetEffectFrame();
                             if (image != null)
                                 VideoImage.Value = image;
                         }

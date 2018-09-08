@@ -1,10 +1,6 @@
 ﻿using OpenCvSharp;
 using OpenCvSharp.Extensions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
 // http://www.moonmile.net/blog/archives/6258
@@ -30,20 +26,31 @@ namespace PrismWpf.MainModule.Models
         /// カメラからフレームを取得して返す
         /// </summary>
         /// <returns>カメラの生画像</returns>
-        public BitmapSource GetVideoFrame()
+        public BitmapSource GetRawBitmapSource()
         {
             BitmapSource bitmap = null;
-            using (var frame = new Mat())
+            using (var mat = GetRawMat())
             {
-                videoCapture.Read(frame);
-
-                if (!frame.Empty())
+                if (mat != null)
                 {
-                    bitmap = frame.ToBitmapSource();
+                    bitmap = mat.ToBitmapSource();
                     bitmap.Freeze();
                 }
             }
             return bitmap;
+        }
+
+        /// <summary>
+        /// カメラからフレームを取得して返す
+        /// </summary>
+        /// <returns>生のMat</returns>
+        public Mat GetRawMat()
+        {
+            var frame = new Mat();
+
+            videoCapture.Read(frame);
+
+            return frame.Empty() ? null : frame;
         }
 
         public void Dispose()
