@@ -80,20 +80,21 @@ namespace PrismWpf.MainModule.ViewModels
                 {
                     //Task.Run(() => ReadDiskJpegs()); // View表示テスト
 
-                    // C++DLLのテストコード
-                    //while (true)
+                    Task.Run(() =>
                     {
-                        IntPtr matPtr = videoCaptureWrapper.GetVideoFrame();
-
-                        using (var nega = new NegaFilterWrapper())
+                        // C++DLLのテストコード
+                        while (true)
                         {
-                            nega.Processing(matPtr);
+                            IntPtr matPtr = videoCaptureWrapper.GetVideoFrame();
+
+                            using (var nega = new NegaFilterWrapper())
+                            {
+                                nega.Processing(matPtr);
+                            }
+
+                            VideoFrameImage2 = videoCaptureWrapper.ToBitmapSource(matPtr);
                         }
-
-                        VideoFrameImage2 = videoCaptureWrapper.ToBitmapSource(matPtr);
-
-                        //System.Threading.Thread.Sleep(100);
-                    }
+                    });
                 });
 
         }

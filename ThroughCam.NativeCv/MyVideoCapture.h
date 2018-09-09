@@ -52,6 +52,11 @@ public:
 			return nullptr;
 
 		*videoCapture >> frameLatest;
+
+		if (frameLatest.empty()) {
+			return nullptr;
+		}
+
 		return &frameLatest;
 	}
 
