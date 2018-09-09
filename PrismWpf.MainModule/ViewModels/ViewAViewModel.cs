@@ -1,13 +1,11 @@
-﻿using Prism.Commands;
-using Prism.Mvvm;
+﻿using Prism.Mvvm;
+using PrismWpf.MainModule.Common;
 using PrismWpf.MainModule.Models;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -22,20 +20,28 @@ namespace PrismWpf.MainModule.ViewModels
 
         private VideoStreamManager videoStreamManager;
 
-        //public ReactiveProperty<BitmapSource> VideoImage { get; } = new ReactiveProperty<BitmapSource>();
-        //{
-        //    get => _VideoImage;
-        //    set => SetProperty(ref _VideoImage, value);
-        //}
+        // C++Wrapper
+        private VideoCaptureWrapper videoCaptureWrapper = new VideoCaptureWrapper();
+
 
         // View表示画像
         public ReadOnlyReactiveProperty<BitmapSource> VideoFrameImage { get; }
 
+        private BitmapSource _VideoFrameImage2;
+        public BitmapSource VideoFrameImage2
+        {
+            get => _VideoFrameImage2;
+            set => SetProperty(ref _VideoFrameImage2, value);
+        }
+
         #region Command
 
-        // 自動実行コマンド
-        public ReactiveCommand StartCommand { get; } = new ReactiveCommand();
-        
+        // OpenCvSharpコマンド
+        public ReactiveCommand StartCvSharpCommand { get; } = new ReactiveCommand();
+
+        // C++Wrapperコマンド
+        public ReactiveCommand StartCppCommand { get; } = new ReactiveCommand();
+
         #endregion
 
 
@@ -46,79 +52,68 @@ namespace PrismWpf.MainModule.ViewModels
             videoStreamManager = new VideoStreamManager();
             CompositeDisposable.Add(videoStreamManager);
 
-            // C++DLLのテストコード
-            using (var vc = new VideoCaptureWrapper())
-            {
-                //vc.ShowVideo();
-                //vc.GetVideoImage();
-            }
-
             // ReactiveProperty
             VideoFrameImage = videoStreamManager.FrameLatest.ToReadOnlyReactiveProperty().AddTo(CompositeDisposable);
 
-            this.StartCommand
+            videoCaptureWrapper.Initialize();
+
+            this.StartCvSharpCommand
                 .Subscribe(_ =>
                 {
+                    // Task.Run(() => ReadDiskJpegs()); // View表示テスト
+
                     Task.Run(() =>
                     {
-#if false
-                        var basePath = @"C:\Users\t_hos\source\repos\_data\CrazyShooters\_Bonus";
-
-                        string[] imagePaths = Directory.GetFiles(basePath, "*.jpg", SearchOption.TopDirectoryOnly);
-
-                        Debug.WriteLine("Start");
-                        var sw = new Stopwatch();
-                        sw.Start();
-
-                        foreach (var path in imagePaths)
-                        {
-                            VideoImage = ToBitmapImage(path);
-                        }
-
-                        sw.Stop();
-                        Debug.WriteLine($"End {sw.ElapsedMilliseconds}msec");
-#endif
-                        // 初期化
                         videoStreamManager.Initialize();
 
                         while (true)
                         {
                             videoStreamManager.CaptureRawFrame();
                             //videoStreamManager.CaptureEffectFrame();
+                        }
+                    });
+                });
 
-                            //var image = VideoStreamManager.GetRawFrame();
-                            //var image = videoStreamManager.GetEffectFrame();
-                            //if (image != null) VideoFrameImage.Value = image;
+
+            this.StartCppCommand
+                .Subscribe(_ =>
+                {
+                    //Task.Run(() => ReadDiskJpegs()); // View表示テスト
+
+                    // C++DLLのテストコード
+                    //while (true)
+                    {
+                        IntPtr matPtr = videoCaptureWrapper.GetVideoFrame();
+
+                        using (var nega = new NegaFilterWrapper())
+                        {
+                            nega.Processing(matPtr);
                         }
 
-                    });
+                        VideoFrameImage2 = videoCaptureWrapper.ToBitmapSource(matPtr);
+
+                        //System.Threading.Thread.Sleep(100);
+                    }
                 });
 
         }
 
-
-        /// <summary>
-        /// 引数PATHをBitmapImageで読み出す
-        /// </summary>
-        /// <param name="imagePath">画像PATH</param>
-        /// <returns></returns>
-        public static BitmapImage ToBitmapImage(string imagePath)
+        private void ReadDiskJpegs()
         {
-            if (imagePath == null) throw new ArgumentNullException();
-            if (!File.Exists(imagePath)) throw new FileNotFoundException();
+            var basePath = @"C:\";
+            string[] imagePaths = Directory.GetFiles(basePath, "*.jpg", SearchOption.TopDirectoryOnly);
 
-            var bi = new BitmapImage();
+            Debug.WriteLine("Start");
+            var sw = new Stopwatch();
+            sw.Start();
 
-            // アプリが画像ファイルを占有しない
-            using (var fs = File.Open(imagePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            foreach (var path in imagePaths)
             {
-                bi.BeginInit();
-                bi.CacheOption = BitmapCacheOption.OnLoad;
-                bi.StreamSource = fs;
-                bi.EndInit();
-                bi.Freeze();
+                VideoFrameImage2 = path.ToBitmapImage();
             }
-            return bi;
+
+            sw.Stop();
+            Debug.WriteLine($"End {sw.ElapsedMilliseconds}msec");
         }
     }
 }

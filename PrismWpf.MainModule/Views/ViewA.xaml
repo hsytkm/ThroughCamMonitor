@@ -13,16 +13,28 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="300" />
+            <RowDefinition Height="200" />
         </Grid.RowDefinitions>
 
-        <Button Margin="0,5"
-                Height="50"
-                Content="Start"
-                Command="{Binding StartCommand, Mode=OneTime}" />
+        <Grid Height="50" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button Content="Start(OpenCvSharp)"
+                    Command="{Binding StartCvSharpCommand, Mode=OneTime}" />
+
+            <Button Grid.Column="1"
+                    Content="Start(C++Wrapper)"
+                    Command="{Binding StartCppCommand, Mode=OneTime}" />
+        </Grid>
 
         <Image Grid.Row="1"
                Source="{Binding VideoFrameImage.Value, Mode=OneWay}" />
+
+        <Image Grid.Row="1"
+               Source="{Binding VideoFrameImage2, Mode=OneWay}" />
 
     </Grid>
 </UserControl>
