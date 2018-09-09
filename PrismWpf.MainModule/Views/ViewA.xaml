@@ -13,6 +13,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="200" />
         </Grid.RowDefinitions>
 
@@ -22,18 +23,28 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Button Content="Start(OpenCvSharp)"
-                    Command="{Binding StartCvSharpCommand, Mode=OneTime}" />
+            <Button Content="Start(C++Wrapper)"
+                    Command="{Binding StartCppCommand, Mode=OneTime}" />
 
             <Button Grid.Column="1"
-                    Content="Start(C++Wrapper)"
-                    Command="{Binding StartCppCommand, Mode=OneTime}" />
+                    Content="Start(OpenCvSharp)"
+                    Command="{Binding StartCvSharpCommand, Mode=OneTime}" />
         </Grid>
 
-        <Image Grid.Row="1"
+        <StackPanel Grid.Row="1" >
+            <CheckBox Margin="0,3"
+                      Content="Face Detect"
+                      IsChecked="{Binding IsFaceDetect.Value, Mode=TwoWay}" />
+
+            <CheckBox Margin="0,3"
+                      Content="Nega/Posi"
+                      IsChecked="{Binding IsNegaPosi.Value, Mode=TwoWay}" />
+        </StackPanel>
+
+        <Image Grid.Row="2"
                Source="{Binding VideoFrameImage.Value, Mode=OneWay}" />
 
-        <Image Grid.Row="1"
+        <Image Grid.Row="2"
                Source="{Binding VideoFrameImage2, Mode=OneWay}" />
 
     </Grid>

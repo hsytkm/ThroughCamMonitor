@@ -34,6 +34,12 @@ namespace PrismWpf.MainModule.ViewModels
             set => SetProperty(ref _VideoFrameImage2, value);
         }
 
+        // 顔検出フラグ
+        public ReactiveProperty<bool> IsFaceDetect { get; }
+
+        // ネガポジフラグ
+        public ReactiveProperty<bool> IsNegaPosi { get; }
+
         #region Command
 
         // OpenCvSharpコマンド
@@ -43,6 +49,20 @@ namespace PrismWpf.MainModule.ViewModels
         public ReactiveCommand StartCppCommand { get; } = new ReactiveCommand();
 
         #endregion
+
+        // 以下、暫定
+        private bool _IsFaceDetect2;
+        public bool IsFaceDetect2
+        {
+            get => _IsFaceDetect2;
+            set => SetProperty(ref _IsFaceDetect2, value);
+        }
+        private bool _IsNegaPosi2;
+        public bool IsNegaPosi2
+        {
+            get => _IsNegaPosi2;
+            set => SetProperty(ref _IsNegaPosi2, value);
+        }
 
 
         public ViewAViewModel()
@@ -54,6 +74,9 @@ namespace PrismWpf.MainModule.ViewModels
 
             // ReactiveProperty
             VideoFrameImage = videoStreamManager.FrameLatest.ToReadOnlyReactiveProperty().AddTo(CompositeDisposable);
+
+            IsFaceDetect = this.ToReactivePropertyAsSynchronized(x => x.IsFaceDetect2).AddTo(CompositeDisposable);
+            IsNegaPosi = this.ToReactivePropertyAsSynchronized(x => x.IsNegaPosi2).AddTo(CompositeDisposable);
 
             videoCaptureWrapper.Initialize();
 
@@ -87,9 +110,19 @@ namespace PrismWpf.MainModule.ViewModels
                         {
                             IntPtr matPtr = videoCaptureWrapper.GetVideoFrame();
 
-                            using (var nega = new NegaFilterWrapper())
+                            if (IsFaceDetect2)
                             {
-                                nega.Processing(matPtr);
+                                using (var face = new FaceDetectWrapper())
+                                {
+                                    face.Processing(matPtr);
+                                }
+                            }
+                            if (IsNegaPosi2)
+                            {
+                                using (var nega = new NegaFilterWrapper())
+                                {
+                                    nega.Processing(matPtr);
+                                }
                             }
 
                             VideoFrameImage2 = videoCaptureWrapper.ToBitmapSource(matPtr);
