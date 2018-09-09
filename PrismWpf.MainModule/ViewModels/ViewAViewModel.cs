@@ -83,8 +83,8 @@ namespace PrismWpf.MainModule.ViewModels
 
                         while (true)
                         {
-                            //videoStreamManager.CaptureRawFrame();
-                            videoStreamManager.CaptureEffectFrame();
+                            videoStreamManager.CaptureRawFrame();
+                            //videoStreamManager.CaptureEffectFrame();
 
                             //var image = VideoStreamManager.GetRawFrame();
                             //var image = videoStreamManager.GetEffectFrame();

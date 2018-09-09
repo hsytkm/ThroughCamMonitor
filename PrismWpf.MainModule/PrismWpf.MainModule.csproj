@@ -81,7 +81,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ThroughCam.VideoCaptureWrapper\ThroughCam.VideoCaptureWrapper.vcxproj">
+    <ProjectReference Include="..\ThroughCam.NativeWrapper\ThroughCam.NativeWrapper.vcxproj">
       <Project>{1a11545a-77c7-4006-8aff-72aa61b58ad6}</Project>
       <Name>ThroughCam.VideoCaptureWrapper</Name>
     </ProjectReference>

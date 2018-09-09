@@ -7,9 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrismWpf", "PrismWpf\PrismW
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrismWpf.MainModule", "PrismWpf.MainModule\PrismWpf.MainModule.csproj", "{5EB0C370-3C16-4099-BBC1-ECE04B25815A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ThroughCam.MyVideoCapture", "ThroughCam.MyVideoCapture\ThroughCam.MyVideoCapture.vcxproj", "{6ECFB941-7B65-4C96-A357-5231EB81C5EC}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ThroughCam.NativeCv", "ThroughCam.NativeCv\ThroughCam.NativeCv.vcxproj", "{6ECFB941-7B65-4C96-A357-5231EB81C5EC}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ThroughCam.VideoCaptureWrapper", "ThroughCam.VideoCaptureWrapper\ThroughCam.VideoCaptureWrapper.vcxproj", "{1A11545A-77C7-4006-8AFF-72AA61B58AD6}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ThroughCam.NativeWrapper", "ThroughCam.NativeWrapper\ThroughCam.NativeWrapper.vcxproj", "{1A11545A-77C7-4006-8AFF-72AA61B58AD6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
