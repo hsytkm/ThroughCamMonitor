@@ -136,12 +136,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="NegaFilterWrapper.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="VideoCaptureWrapper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="NegaFilterWrapper.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -162,7 +164,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ThroughCam.MyVideoCapture\ThroughCam.MyVideoCapture.vcxproj">
+    <ProjectReference Include="..\ThroughCam.NativeCv\ThroughCam.NativeCv.vcxproj">
       <Project>{6ecfb941-7b65-4c96-a357-5231eb81c5ec}</Project>
     </ProjectReference>
   </ItemGroup>
