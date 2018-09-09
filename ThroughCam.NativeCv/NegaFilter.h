@@ -9,4 +9,8 @@ private:
 public:
 	NegaFilter() {}
 	~NegaFilter() {}
+
+	void Processing(cv::Mat* mat) {
+		*mat = ~(*mat);
+	}
 };

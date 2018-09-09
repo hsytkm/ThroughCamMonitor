@@ -1,4 +1,6 @@
 #pragma once
+#include <iostream>
+#include <opencv2/opencv.hpp>
 #include "NegaFilter.h"
 
 using namespace System;
@@ -26,6 +28,11 @@ namespace ThroughCamVideoCaptureWrapper {
 				delete p;
 				p = nullptr;
 			}
+		}
+
+		void Processing(System::IntPtr ptr) {
+			cv::Mat* src = reinterpret_cast<cv::Mat*>(ptr.ToPointer());
+			p->Processing(src);
 		}
 
 	};
