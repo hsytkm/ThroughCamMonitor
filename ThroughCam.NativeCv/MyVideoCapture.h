@@ -4,51 +4,55 @@
 
 class MyVideoCapture {
 private:
-	int x;
+	int deviceId = 0;
 
+	cv::VideoCapture* videoCapture = nullptr;
+	cv::Mat frameLatest;
+		
 public:
 	MyVideoCapture() {}
-	~MyVideoCapture() {}
+	~MyVideoCapture() {
+		delete videoCapture;
+		videoCapture = nullptr;
+	}
 
+#if 0	// 思い出保存
 	int ShowVideo() {
-
-		//デバイスのオープン
 		cv::VideoCapture cap(0);	// cap.open(0); こっちでも良いらしい
-
-		// デバイスの接続確認
 		if (!cap.isOpened()) return -1;
-
 		while (1)
 		{
 			cv::Mat frame;
 			cap >> frame;
-
 			cv::imshow("window", frame);
-
-#if true
 			int key = cv::waitKey(1);
 			if (key == 113)
 				break;							// qボタン押下でループ抜け
 			else if (key == 115)
 				cv::imwrite("img.png", frame);	// sボタン押下でフレーム画像を保存
-#endif
 		}
-
 		cv::destroyAllWindows();
 		return 0;
 	}
+#endif
 
-	int GetVideoImage() {
-
-		//デバイスのオープン
-		cv::VideoCapture cap(0);	// cap.open(0); こっちでも良いらしい
+	// 初期化
+	void Initialize() {
+		videoCapture = new cv::VideoCapture(deviceId);
 
 		// デバイスの接続確認
-		if (!cap.isOpened()) return -1;
+		if (!videoCapture->isOpened()) {
+			videoCapture = nullptr;
+		}
+	}
 
-		cv::Mat frame;
-		cap >> frame;
-		return 0;
+	// 最新フレームを取得
+	cv::Mat* GetVideoFrame() {
+		if (videoCapture == nullptr || !videoCapture->isOpened())
+			return nullptr;
+
+		*videoCapture >> frameLatest;
+		return &frameLatest;
 	}
 
 };
