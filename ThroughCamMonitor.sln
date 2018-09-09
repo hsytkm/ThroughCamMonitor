@@ -11,6 +11,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ThroughCam.NativeCv", "Thro
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ThroughCam.NativeWrapper", "ThroughCam.NativeWrapper\ThroughCam.NativeWrapper.vcxproj", "{1A11545A-77C7-4006-8AFF-72AA61B58AD6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{519A427D-39B1-42AC-871E-12DA3BD57DB4}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
