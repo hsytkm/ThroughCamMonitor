@@ -137,6 +137,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="FaceDetectWrapper.h" />
+    <ClInclude Include="IModuleWrapper.h" />
     <ClInclude Include="ModuleWrapper.h" />
     <ClInclude Include="NegaFilterWrapper.h" />
     <ClInclude Include="Resource.h" />

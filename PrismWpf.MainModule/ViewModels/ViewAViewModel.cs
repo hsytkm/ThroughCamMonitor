@@ -4,6 +4,7 @@ using PrismWpf.MainModule.Models;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reactive.Disposables;
@@ -110,18 +111,14 @@ namespace PrismWpf.MainModule.ViewModels
                         {
                             IntPtr matPtr = videoCaptureWrapper.GetVideoFrame();
 
-                            if (IsFaceDetect2)
+                            var wrappers = new List<IModuleWrapper>();
+                            if (IsFaceDetect2) wrappers.Add(new FaceDetectWrapper());
+                            if (IsNegaPosi2) wrappers.Add(new NegaFilterWrapper());
+                            if (wrappers.Count > 0)
                             {
-                                using (var face = new FaceDetectWrapper())
+                                foreach(var w in wrappers)
                                 {
-                                    face.Processing(matPtr);
-                                }
-                            }
-                            if (IsNegaPosi2)
-                            {
-                                using (var nega = new NegaFilterWrapper())
-                                {
-                                    nega.Processing(matPtr);
+                                    w.Processing(matPtr);
                                 }
                             }
 

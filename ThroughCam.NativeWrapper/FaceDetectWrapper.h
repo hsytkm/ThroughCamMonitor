@@ -2,6 +2,7 @@
 #pragma unmanaged
 #include "FaceDetect.h"
 #pragma managed
+#include "IModuleWrapper.h"
 #include "ModuleWrapper.h"
 
 namespace ThroughCamVideoCaptureWrapper {

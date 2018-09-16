@@ -4,9 +4,10 @@
 #include "ModuleBase.h"
 #pragma managed
 #include <iostream>
+#include "IModuleWrapper.h"
 
 namespace ThroughCamVideoCaptureWrapper {
-	public ref class ModuleWrapper
+	public ref class ModuleWrapper : public IModuleWrapper
 	{
 	private:
 		bool isResponsible;
@@ -30,7 +31,7 @@ namespace ThroughCamVideoCaptureWrapper {
 			}
 		}
 
-		void Processing(System::IntPtr ptr) {
+		virtual void Processing(System::IntPtr ptr) {
 			cv::Mat* src = reinterpret_cast<cv::Mat*>(ptr.ToPointer());
 			p->Processing(src);
 		}
