@@ -1,7 +1,9 @@
 #pragma once
-#include <iostream>
+#pragma unmanaged
 #include <opencv2/opencv.hpp>
 #include "FaceDetect.h"
+#pragma managed
+#include <iostream>
 
 using namespace System;
 

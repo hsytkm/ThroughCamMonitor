@@ -27,7 +27,7 @@
                     Command="{Binding StartCppCommand, Mode=OneTime}" />
 
             <Button Grid.Column="1"
-                    Content="Start(OpenCvSharp)"
+                    Content="Start(OpenCvSharp) CheckBox未対応"
                     Command="{Binding StartCvSharpCommand, Mode=OneTime}" />
         </Grid>
 
