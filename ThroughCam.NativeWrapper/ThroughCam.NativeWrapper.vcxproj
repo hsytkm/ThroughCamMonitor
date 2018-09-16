@@ -141,6 +141,7 @@
     <ClInclude Include="ModuleWrapper.h" />
     <ClInclude Include="NegaFilterWrapper.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="StaticClassForCsharp.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="VideoCaptureWrapper.h" />
   </ItemGroup>

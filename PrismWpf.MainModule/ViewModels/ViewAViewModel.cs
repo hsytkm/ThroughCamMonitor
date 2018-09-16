@@ -121,8 +121,7 @@ namespace PrismWpf.MainModule.ViewModels
                                     w.Processing(matPtr);
                                 }
                             }
-
-                            VideoFrameImage2 = videoCaptureWrapper.ToBitmapSource(matPtr);
+                            VideoFrameImage2 = StaticClassForCsharp.ToBitmapSource(matPtr);
                         }
                     });
                 });
