@@ -1,8 +1,9 @@
 #pragma once
 #include <iostream>
 #include <opencv2/opencv.hpp>
+#include "ModuleBase.h"
 
-class NegaFilter {
+class NegaFilter : public ModuleBase {
 private:
 	int x;
 

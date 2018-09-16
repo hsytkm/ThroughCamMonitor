@@ -1,41 +1,17 @@
 #pragma once
 #pragma unmanaged
-#include <opencv2/opencv.hpp>
 #include "FaceDetect.h"
 #pragma managed
-#include <iostream>
-
-using namespace System;
+#include "ModuleWrapper.h"
 
 namespace ThroughCamVideoCaptureWrapper {
-	public ref class FaceDetectWrapper
+	public ref class FaceDetectWrapper : public ModuleWrapper
 	{
-	private:
-		bool isResponsible;
-		FaceDetect *p;
-
 	public:
-		FaceDetectWrapper() : isResponsible{ true }, p{ new FaceDetect() } {}
-		//FaceDetectWrapper(FaceDetect^ obj) : isResponsible{ true }, p{ new FaceDetect(obj->p) } {}
-		FaceDetectWrapper(FaceDetect *p) : isResponsible{ false }, p{ p } {}
+		FaceDetectWrapper() : ModuleWrapper(new FaceDetect()) {}
 
-		// マネージド及びアンマネージドリソースの解放
 		~FaceDetectWrapper() { this->!FaceDetectWrapper(); }
 
-		// アンマネージドリソースの解放
-		!FaceDetectWrapper()
-		{
-			if (isResponsible && p)
-			{
-				delete p;
-				p = nullptr;
-			}
-		}
-
-		void Processing(System::IntPtr ptr) {
-			cv::Mat* src = reinterpret_cast<cv::Mat*>(ptr.ToPointer());
-			p->Processing(src);
-		}
-
+		!FaceDetectWrapper() {}
 	};
 }

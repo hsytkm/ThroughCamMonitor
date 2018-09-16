@@ -1,8 +1,9 @@
 #pragma once
 #include <iostream>
 #include <opencv2/opencv.hpp>
+#include "ModuleBase.h"
 
-class FaceDetect {
+class FaceDetect : public ModuleBase {
 private:
 	const std::string cascade_file = "C:\\OpenCV\\sources\\data\\haarcascades\\haarcascade_frontalface_default.xml";
 	cv::CascadeClassifier cascade;

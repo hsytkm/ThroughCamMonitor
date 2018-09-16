@@ -150,6 +150,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="FaceDetect.h" />
+    <ClInclude Include="ModuleBase.h" />
     <ClInclude Include="MyVideoCapture.h" />
     <ClInclude Include="NegaFilter.h" />
     <ClInclude Include="stdafx.h" />
