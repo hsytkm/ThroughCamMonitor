@@ -3,8 +3,6 @@
 #include <opencv2/opencv.hpp>
 #pragma managed
 
-using namespace System;
-
 // BitmapSource‘Î‰
 // QÆ‚É’Ç‰ÁF"PresentationCore", "WindowsBase"
 using namespace System::Windows::Media::Imaging;

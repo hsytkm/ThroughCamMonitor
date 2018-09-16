@@ -14,9 +14,9 @@ namespace ThroughCamVideoCaptureWrapper {
 		ModuleBase *p;
 
 	public:
-		ModuleWrapper(ModuleBase *p) : isResponsible{ true }, p{ p } {}
+		//ModuleWrapper() : isResponsible{ true }, p{ new ModuleBase() } {}
 		//ModuleWrapper(ModuleBase^ obj) : isResponsible{ true }, p{ new ModuleBase(obj->p) } {}
-		//ModuleWrapper(ModuleBase *p) : isResponsible{ false }, p{ p } {}
+		ModuleWrapper(ModuleBase *p) : isResponsible{ false }, p{ p } {}
 
 		// マネージド及びアンマネージドリソースの解放
 		~ModuleWrapper() { this->!ModuleWrapper(); }
@@ -30,6 +30,8 @@ namespace ThroughCamVideoCaptureWrapper {
 				p = nullptr;
 			}
 		}
+
+		virtual void Processing(cv::Mat* mat) { p->Processing(mat); }
 
 		virtual void Processing(System::IntPtr ptr) {
 			cv::Mat* src = reinterpret_cast<cv::Mat*>(ptr.ToPointer());

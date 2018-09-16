@@ -1,10 +1,7 @@
 #pragma once
 #include <iostream>
-
-#include "IModuleWrapper.h"
+#include "ModuleFactory.h"
 #include "ModuleWrapper.h"
-#include "NegaFilterWrapper.h"
-#include "FaceDetectWrapper.h"
 
 using namespace System::Collections::ObjectModel;
 
@@ -12,15 +9,11 @@ namespace ThroughCamVideoCaptureWrapper {
 
 	public ref class ModuleManager
 	{
-	public:
-		// C++/CLI‚Ì—ñ‹“‘Ì’è‹` https://msdn.microsoft.com/ja-jp/library/tzz3794d.aspx?f=255&MSPPError=-2147217396
-		enum class ModuleType { Nega, Face };
-
 	private:
-		ReadOnlyCollection<ModuleType>^ moduleTypes;
+		ReadOnlyCollection<ModuleFactory::ModuleType>^ moduleTypes;
 
 	public:
-		ModuleManager(ReadOnlyCollection<ModuleType>^ types) : moduleTypes{ types } {}
+		ModuleManager(ReadOnlyCollection<ModuleFactory::ModuleType>^ types) : moduleTypes{ types } {}
 
 		~ModuleManager() { this->!ModuleManager(); }
 
@@ -28,25 +21,18 @@ namespace ThroughCamVideoCaptureWrapper {
 
 		void Processing(System::IntPtr ptr)
 		{
+			auto mat = reinterpret_cast<cv::Mat*>(ptr.ToPointer());
+
 			for each (auto type in moduleTypes)
 			{
 				//System::Console::WriteLine(type.ToString());
-				auto mod = ModuleFactory(type);
-				mod->Processing(ptr);
+
+				auto mod = ModuleFactory::GetModule(type);
+				ModuleWrapper^ moduleWrapper = gcnew ModuleWrapper(mod);
+				moduleWrapper->Processing(mat);
+				delete mod;
 			}
 		}
 
-	private:
-		IModuleWrapper^ ModuleFactory(ModuleType type) {
-			switch (type)
-			{
-			case ModuleType::Nega:
-				return gcnew NegaFilterWrapper();
-			case ModuleType::Face:
-				return gcnew FaceDetectWrapper();
-			default:
-				throw gcnew NotImplementedException();
-			}
-		}
 	};
 }

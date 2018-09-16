@@ -136,11 +136,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="FaceDetectWrapper.h" />
     <ClInclude Include="IModuleWrapper.h" />
+    <ClInclude Include="ModuleFactory.h" />
     <ClInclude Include="ModuleManager.h" />
     <ClInclude Include="ModuleWrapper.h" />
-    <ClInclude Include="NegaFilterWrapper.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="StaticClassForCsharp.h" />
     <ClInclude Include="stdafx.h" />

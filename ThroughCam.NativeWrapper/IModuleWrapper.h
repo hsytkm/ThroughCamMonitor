@@ -4,7 +4,8 @@ namespace ThroughCamVideoCaptureWrapper {
 	public interface class IModuleWrapper
 	{
 	public:
-		virtual void Processing(System::IntPtr ptr);
+		virtual void Processing(cv::Mat*);
+		virtual void Processing(System::IntPtr);
 
 	};
 }

@@ -111,9 +111,9 @@ namespace PrismWpf.MainModule.ViewModels
                         {
                             IntPtr matPtr = videoCaptureWrapper.GetVideoFrame();
                             
-                            var moduleTypes = new List<ModuleManager.ModuleType>();
-                            if (IsFaceDetect2) moduleTypes.Add(ModuleManager.ModuleType.Face);
-                            if (IsNegaPosi2) moduleTypes.Add(ModuleManager.ModuleType.Nega);
+                            var moduleTypes = new List<ModuleFactory.ModuleType>();
+                            if (IsFaceDetect2) moduleTypes.Add(ModuleFactory.ModuleType.Face);
+                            if (IsNegaPosi2) moduleTypes.Add(ModuleFactory.ModuleType.Nega);
 
                             using (var moduleManager = new ModuleManager(moduleTypes.AsReadOnly()))
                             {
