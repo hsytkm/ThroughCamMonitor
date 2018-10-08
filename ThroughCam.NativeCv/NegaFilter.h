@@ -14,4 +14,8 @@ public:
 	void Processing(cv::Mat* mat) {
 		*mat = ~(*mat);
 	}
+
+	int GetRectCount() { return 0; }
+	cv::Rect GetRectData(int i) { return cv::Rect(); }
+
 };

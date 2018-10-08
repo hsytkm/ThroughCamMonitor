@@ -52,5 +52,12 @@ namespace ThroughCamVideoCaptureWrapper {
 			return ToBitmapSource(&mat);
 		}
 
+		static void drawRectangle(cv::Mat* mat, cv::Rect rect) {
+			cv::rectangle(*mat,
+				cv::Point(rect.x, rect.y),
+				cv::Point(rect.x + rect.width, rect.y + rect.height),
+				cv::Scalar(0, 200, 0), 3, CV_AA);
+		}
+
 	};
 }
