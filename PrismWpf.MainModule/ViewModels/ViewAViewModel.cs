@@ -109,18 +109,21 @@ namespace PrismWpf.MainModule.ViewModels
                         // C++DLLのテストコード
                         while (true)
                         {
-                            IntPtr matPtr = videoCaptureWrapper.GetVideoFrame();
-                            
+                            var matBuffer = new MatBuffer();
+                            IntPtr srcMat = videoCaptureWrapper.GetVideoFrame();
+                            IntPtr aftMat = matBuffer.CopyIntPtrMat(srcMat);
+
                             var moduleTypes = new List<ModuleFactory.ModuleType>();
                             if (IsFaceDetect2) moduleTypes.Add(ModuleFactory.ModuleType.Face);
                             if (IsNegaPosi2) moduleTypes.Add(ModuleFactory.ModuleType.Nega);
 
                             using (var moduleManager = new ModuleManager(moduleTypes.AsReadOnly()))
                             {
-                                moduleManager.Processing(matPtr);
+                                aftMat = moduleManager.Processing(aftMat);
                             }
 
-                            VideoFrameImage2 = StaticClassForCsharp.ToBitmapSource(matPtr);
+                            //VideoFrameImage2 = StaticClassForCsharp.ToBitmapSource(aftMat);
+                            VideoFrameImage2 = StaticClassForCsharp.ToBitmapSource(srcMat, aftMat);
                         }
                     });
                 });

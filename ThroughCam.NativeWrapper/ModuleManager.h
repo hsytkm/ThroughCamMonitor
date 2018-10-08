@@ -19,7 +19,7 @@ namespace ThroughCamVideoCaptureWrapper {
 
 		!ModuleManager() {}
 
-		void Processing(System::IntPtr ptr)
+		System::IntPtr Processing(System::IntPtr ptr)
 		{
 			auto mat = reinterpret_cast<cv::Mat*>(ptr.ToPointer());
 
@@ -32,7 +32,9 @@ namespace ThroughCamVideoCaptureWrapper {
 				moduleWrapper->Processing(mat);
 				delete mod;
 			}
+			return System::IntPtr(mat);
 		}
+
 
 	};
 }

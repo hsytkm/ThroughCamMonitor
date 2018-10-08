@@ -38,8 +38,19 @@ namespace ThroughCamVideoCaptureWrapper {
 		}
 
 		static BitmapSource^ ToBitmapSource(System::IntPtr ptr) {
-			auto img = reinterpret_cast<const cv::Mat*>(ptr.ToPointer());
-			return ToBitmapSource(img);
+			auto mat = reinterpret_cast<const cv::Mat*>(ptr.ToPointer());
+			return ToBitmapSource(mat);
 		}
+
+		static BitmapSource^ ToBitmapSource(System::IntPtr left, System::IntPtr right) {
+			auto matL = reinterpret_cast<const cv::Mat*>(left.ToPointer());
+			auto matR = reinterpret_cast<const cv::Mat*>(right.ToPointer());
+
+			cv::Mat mat;
+			cv::hconcat(*matL, *matR, mat);
+
+			return ToBitmapSource(&mat);
+		}
+
 	};
 }

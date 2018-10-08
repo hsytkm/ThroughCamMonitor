@@ -137,6 +137,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="IModuleWrapper.h" />
+    <ClInclude Include="MatBuffer.h" />
     <ClInclude Include="ModuleFactory.h" />
     <ClInclude Include="ModuleManager.h" />
     <ClInclude Include="ModuleWrapper.h" />
